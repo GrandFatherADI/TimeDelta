@@ -2,8 +2,8 @@
 
 ## Copyright &copy; 2023 ADInstruments
 
-__*The code is provided "as is" without warranty of any kind.
-*__ADInstruments__* does not warrant that the functions of the code will meet
+__*The code is provided "as is" without warranty of any kind.*__
+ADInstruments __*does not warrant that the functions of the code will meet
 your requirements, or that the operation of the code will be uninterrupted or
 error-free, or that defects in it can be corrected.*__
 
