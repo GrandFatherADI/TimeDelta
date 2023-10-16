@@ -45,7 +45,7 @@ specific issues may be raised using GitHub's normal Issues management facility.
 
 The fastest way to use this analyzer is to download a release from github at
 https://github.com/GrandFatherADI/TimeDelta/actions. Click on the commit title
-for the most recent release version (__V1.0.1__ for example), then at teh bottom
+for the most recent release version (__V1.0.1__ for example), then at the bottom
 of the "runs" page click on the Artifacts entry for your platform. This will
 download a .zip file containing the extension file. Unzip this to a suitable
 place on your system. Use the "Load Existing Extension..." dialog to point
@@ -53,11 +53,17 @@ Logic2 at the folder.
 
 ![Load Existing Extension image](./docs/add.png)
 
-Alternatively the repository can be cloned and used to build TimeDelta locally.
+## Clone and build
+
+If you wish the repository can be cloned and used to build TimeDelta locally.
 CMake and a C++ compiler are required. Instructions for installing dependencies
 can be found here: https://github.com/saleae/SampleAnalyzer. This repository
 also includes more complete build instructions (especially for Mac) in
 sample_readme.md than the build sysnopsis given below.
+
+Once the repository has been cloned to your machine and tolls and dependencies
+have been installed, from a command line navigate to the root folder of the
+clone then follow the mantra below appropriate to your system.
 
 ### Windows
 
