@@ -18,7 +18,7 @@ performance of a digital PLL or the response time of a system to an input event.
 Active edges may be set independently for the reference and the target inputs to
 be active rising or falling .
 
-![](./docs/edges.jpg)
+![Sample usage image](./docs/edges.png)
 
 Reference edges are marked with a green circle. Target edges are marked with a
 red square. The time between the two edges is shown in a text bubble above the
@@ -87,4 +87,3 @@ cmake --build .
 For details on the Logic SDK's API please refer to the Saleae's
 [Protocol Analyzer
 SDK](https://support.saleae.com/saleae-api-and-sdk/protocol-analyzer-sdk) page.
-
