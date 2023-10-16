@@ -44,7 +44,14 @@ specific issues may be raised using GitHub's normal Issues management facility.
 ## Installation
 
 The fastest way to use this analyzer is to download a release from github at
-https://github.com/GrandFatherADI/TimeDelta.
+https://github.com/GrandFatherADI/TimeDelta/actions. Click on the commit title
+for the most recent release version (__V1.0.1__ for example), then at teh bottom
+of the "runs" page click on the Artifacts entry for your platform. This will
+download a .zip file containing the extension file. Unzip this to a suitable
+place on your system. Use the "Load Existing Extension..." dialog to point
+Logic2 at the folder.
+
+![Load Existing Extension image](./docs/add.png)
 
 Alternatively the repository can be cloned and used to build TimeDelta locally.
 CMake and a C++ compiler are required. Instructions for installing dependencies
