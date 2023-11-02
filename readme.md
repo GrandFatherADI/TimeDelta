@@ -11,21 +11,21 @@ error-free, or that defects in it can be corrected.*__
 
 ## Description
 
-TimeDelta measures the time from active edges on a reference input to active
-edges on a target input. It is useful for tasks such as monitoring the
+TimeDelta measures the time from active edges on a start input to active
+edges on a stop input. It is useful for tasks such as monitoring the
 performance of a digital PLL or the response time of a system to an input event.
 
-Active edges may be set independently for the reference and the target inputs to
-be active rising or falling .
+Active edges may be set independently for the start and the stop inputs to be
+active rising or falling .
 
 ![Sample usage image](./docs/edges.png)
 
-Reference edges are marked with a green circle. Target edges are marked with a
+Start edges are marked with a green circle. Stop edges are marked with a
 red square. The time between the two edges is shown in a text bubble above the
-reference trace between the reference and target edges.
+start trace between the start and stop edges.
 
-TimeDelta looks for the most recent reference edge before a target edge. Only
-adjacent reference and target edges are paired up. Extra edges in either input
+TimeDelta looks for the most recent start edge before a stop edge. Only
+adjacent start and stop edges are paired up. Extra edges in either input
 are skipped.
 
 __Note that TimeDelta does not create sample data at present.__
@@ -45,7 +45,7 @@ specific issues may be raised using GitHub's normal Issues management facility.
 
 The fastest way to use this analyzer is to download a release from github at
 https://github.com/GrandFatherADI/TimeDelta/actions. Click on the commit title
-for the most recent release version (__V1.0.1__ for example), then at the bottom
+for the most recent release version (__V1.0.3__ for example), then at the bottom
 of the "runs" page click on the Artifacts entry for your platform. This will
 download a .zip file containing the extension file. Unzip this to a suitable
 place on your system. Use the "Load Existing Extension..." dialog to point

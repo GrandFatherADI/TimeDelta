@@ -27,6 +27,6 @@ class TimeDeltaSimulationDataGenerator
       void CreateDeltaPair(SimulationChannelDescriptor &scd);
 
       SimulationChannelDescriptorGroup mChannels;
-      SimulationChannelDescriptor *mRefData;
-      SimulationChannelDescriptor *mTagData;
+      SimulationChannelDescriptor *mStartData;
+      SimulationChannelDescriptor *mStopData;
    };

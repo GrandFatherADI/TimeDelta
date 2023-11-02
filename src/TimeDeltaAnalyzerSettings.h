@@ -15,15 +15,15 @@ class TimeDeltaAnalyzerSettings : public AnalyzerSettings
       virtual void LoadSettings(const char* settings);
       virtual const char* SaveSettings();
 
-      Channel mRefChannel;
-      bool mRefEdgeIsPos;
-      Channel mTagChannel;
-      bool mTagEdgeIsPos;
+      Channel mStartChannel;
+      bool mStartEdgeIsPos;
+      Channel mStopChannel;
+      bool mStopEdgeIsPos;
 
    protected:
 
-      std::auto_ptr<AnalyzerSettingInterfaceChannel> mRefChannelInterface;
-      std::auto_ptr<AnalyzerSettingInterfaceBool> mRefEdgeInterface;
-      std::auto_ptr<AnalyzerSettingInterfaceChannel> mTagChannelInterface;
-      std::auto_ptr<AnalyzerSettingInterfaceBool> mTagEdgeInterface;
+      std::auto_ptr<AnalyzerSettingInterfaceChannel> mStartChannelInterface;
+      std::auto_ptr<AnalyzerSettingInterfaceBool> mStartEdgeInterface;
+      std::auto_ptr<AnalyzerSettingInterfaceChannel> mStopChannelInterface;
+      std::auto_ptr<AnalyzerSettingInterfaceBool> mStopEdgeInterface;
    };

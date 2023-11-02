@@ -10,39 +10,39 @@ constexpr int kSettingsVer = 1;
 */
 
 TimeDeltaAnalyzerSettings::TimeDeltaAnalyzerSettings():
-   mRefChannel(UNDEFINED_CHANNEL),
-   mRefEdgeIsPos(true),
-   mTagChannel(UNDEFINED_CHANNEL),
-   mTagEdgeIsPos(true)
+   mStartChannel(UNDEFINED_CHANNEL),
+   mStartEdgeIsPos(true),
+   mStopChannel(UNDEFINED_CHANNEL),
+   mStopEdgeIsPos(true)
    {
-   mRefChannelInterface.reset(new AnalyzerSettingInterfaceChannel());
-   mRefChannelInterface->SetTitleAndTooltip
-      ("Reference", "Measure time delta from this channel to target channel");
-   mRefEdgeInterface.reset(new AnalyzerSettingInterfaceBool());
-   mRefEdgeInterface->SetTitleAndTooltip
-      ("Pos Edge", "Reference rising edge is active");
-   mTagChannelInterface.reset(new AnalyzerSettingInterfaceChannel());
-   mTagChannelInterface->SetTitleAndTooltip
-      ("Target", "Measure time delta from this channel to target channel");
-   mTagEdgeInterface.reset(new AnalyzerSettingInterfaceBool());
-   mTagEdgeInterface->SetTitleAndTooltip
-      ("Pos Edge", "Target rising edge is active");
+   mStartChannelInterface.reset(new AnalyzerSettingInterfaceChannel());
+   mStartChannelInterface->SetTitleAndTooltip
+      ("Start", "Measure time delta from this channel to stop channel");
+   mStartEdgeInterface.reset(new AnalyzerSettingInterfaceBool());
+   mStartEdgeInterface->SetTitleAndTooltip
+      ("Pos Edge", "Start rising edge is active");
+   mStopChannelInterface.reset(new AnalyzerSettingInterfaceChannel());
+   mStopChannelInterface->SetTitleAndTooltip
+      ("Stop", "Measure time delta from start channel to this channel");
+   mStopEdgeInterface.reset(new AnalyzerSettingInterfaceBool());
+   mStopEdgeInterface->SetTitleAndTooltip
+      ("Pos Edge", "Stop rising edge is active");
 
-   mRefChannelInterface->SetChannel(mRefChannel);
-   mTagChannelInterface->SetChannel(mTagChannel);
+   mStartChannelInterface->SetChannel(mStartChannel);
+   mStopChannelInterface->SetChannel(mStopChannel);
 
-   AddInterface(mRefChannelInterface.get());
-   AddInterface(mRefEdgeInterface.get());
-   AddInterface(mTagChannelInterface.get());
-   AddInterface(mTagEdgeInterface.get());
+   AddInterface(mStartChannelInterface.get());
+   AddInterface(mStartEdgeInterface.get());
+   AddInterface(mStopChannelInterface.get());
+   AddInterface(mStopEdgeInterface.get());
 
    AddExportOption(0, "Export as text/csv file");
    AddExportExtension(0, "text", "txt");
    AddExportExtension(0, "csv", "csv");
 
    ClearChannels();
-   AddChannel(mRefChannel, "Ref", false);
-   AddChannel(mTagChannel, "Tag", false);
+   AddChannel(mStartChannel, "Start", false);
+   AddChannel(mStopChannel, "Stop", false);
    }
 
 TimeDeltaAnalyzerSettings::~TimeDeltaAnalyzerSettings()
@@ -51,23 +51,23 @@ TimeDeltaAnalyzerSettings::~TimeDeltaAnalyzerSettings()
 
 bool TimeDeltaAnalyzerSettings::SetSettingsFromInterfaces()
    {
-   mRefChannel = mRefChannelInterface->GetChannel();
-   mRefEdgeIsPos = mRefEdgeInterface->GetValue();
-   mTagChannel = mTagChannelInterface->GetChannel();
-   mTagEdgeIsPos = mTagEdgeInterface->GetValue();
+   mStartChannel = mStartChannelInterface->GetChannel();
+   mStartEdgeIsPos = mStartEdgeInterface->GetValue();
+   mStopChannel = mStopChannelInterface->GetChannel();
+   mStopEdgeIsPos = mStopEdgeInterface->GetValue();
 
    ClearChannels();
-   AddChannel(mRefChannel, "Time Delta", true);
+   AddChannel(mStartChannel, "Time Delta", true);
 
    return true;
    }
 
 void TimeDeltaAnalyzerSettings::UpdateInterfacesFromSettings()
    {
-   mRefChannelInterface->SetChannel(mRefChannel);
-   mRefEdgeInterface->SetValue(mRefEdgeIsPos);
-   mTagChannelInterface->SetChannel(mTagChannel);
-   mTagEdgeInterface->SetValue(mTagEdgeIsPos);
+   mStartChannelInterface->SetChannel(mStartChannel);
+   mStartEdgeInterface->SetValue(mStartEdgeIsPos);
+   mStopChannelInterface->SetChannel(mStopChannel);
+   mStopEdgeInterface->SetValue(mStopEdgeIsPos);
    }
 
 void TimeDeltaAnalyzerSettings::LoadSettings(const char* settings)
@@ -77,14 +77,14 @@ void TimeDeltaAnalyzerSettings::LoadSettings(const char* settings)
    text_archive.SetString(settings);
 
    text_archive >> settingsVer;
-   text_archive >> mRefChannel;
-   text_archive >> mRefEdgeIsPos;
-   text_archive >> mTagChannel;
-   text_archive >> mTagEdgeIsPos;
+   text_archive >> mStartChannel;
+   text_archive >> mStartEdgeIsPos;
+   text_archive >> mStopChannel;
+   text_archive >> mStopEdgeIsPos;
 
    ClearChannels();
-   AddChannel(mRefChannel, "Time Delta", true);
-   AddChannel(mTagChannel, "Time Delta", true);
+   AddChannel(mStartChannel, "Time Delta", true);
+   AddChannel(mStopChannel, "Time Delta", true);
 
    UpdateInterfacesFromSettings();
    }
@@ -94,10 +94,10 @@ const char* TimeDeltaAnalyzerSettings::SaveSettings()
    SimpleArchive text_archive;
 
    text_archive << kSettingsVer;
-   text_archive << mRefChannel;
-   text_archive << mRefEdgeIsPos;
-   text_archive << mTagChannel;
-   text_archive << mTagEdgeIsPos;
+   text_archive << mStartChannel;
+   text_archive << mStartEdgeIsPos;
+   text_archive << mStopChannel;
+   text_archive << mStopEdgeIsPos;
 
    return SetReturnString(text_archive.GetString());
    }

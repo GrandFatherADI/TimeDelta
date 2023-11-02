@@ -20,79 +20,79 @@ void TimeDeltaAnalyzer::SetupResults()
    {
    mResults.reset(new TimeDeltaAnalyzerResults(this, mSettings.get()));
    SetAnalyzerResults(mResults.get());
-   mResults->AddChannelBubblesWillAppearOn(mSettings->mRefChannel);
+   mResults->AddChannelBubblesWillAppearOn(mSettings->mStartChannel);
    }
 
 void TimeDeltaAnalyzer::WorkerThread()
    {
-   AnalyzerChannelData *refData = GetAnalyzerChannelData(mSettings->mRefChannel);
-   AnalyzerChannelData *tagData = GetAnalyzerChannelData(mSettings->mTagChannel);
+   AnalyzerChannelData *startData = GetAnalyzerChannelData(mSettings->mStartChannel);
+   AnalyzerChannelData *stopData = GetAnalyzerChannelData(mSettings->mStopChannel);
    uint32_t sampleRate = GetSampleRate();
 
    // Start on the first edge
-   refData->AdvanceToNextEdge();
-   tagData->AdvanceToNextEdge();
+   startData->AdvanceToNextEdge();
+   stopData->AdvanceToNextEdge();
 
    // Move to the next edge if this one is boring
-   if (bool(refData->GetBitState()) ^ mSettings->mRefEdgeIsPos)
-      refData->AdvanceToNextEdge();
+   if (bool(startData->GetBitState()) ^ mSettings->mStartEdgeIsPos)
+      startData->AdvanceToNextEdge();
 
-   if (bool(tagData->GetBitState()) ^ mSettings->mTagEdgeIsPos)
-      tagData->AdvanceToNextEdge();
+   if (bool(stopData->GetBitState()) ^ mSettings->mStopEdgeIsPos)
+      stopData->AdvanceToNextEdge();
 
    while (true)
       {
-      // Both reference and target channels are at interesting edges.
-      // We are looking for the nearest reference edge before the current
-      // target edge.
+      // Both start and stop channels are at interesting edges.
+      // We are looking for the nearest start edge before the current
+      // stop edge.
 
-      uint64_t refEdge = refData->GetSampleNumber();
-      uint64_t tagEdge = tagData->GetSampleNumber();
+      uint64_t startEdge = startData->GetSampleNumber();
+      uint64_t stopEdge = stopData->GetSampleNumber();
 
-      if (refEdge > tagEdge)
+      if (startEdge > stopEdge)
          {
-         // Current reference edge is after current target edge so find the
-         // next interesting target edge
-         tagData->AdvanceToNextEdge();
-         tagData->AdvanceToNextEdge();
+         // Current start edge is after current stop edge so find the
+         // next interesting stop edge
+         stopData->AdvanceToNextEdge();
+         stopData->AdvanceToNextEdge();
          continue;
          }
 
-      uint64_t pendingRefEdge = refEdge;
+      uint64_t pendingStartEdge = startEdge;
 
       // Force a small read ahead on both channels (we hope)
-      tagData->WouldAdvancingToAbsPositionCauseTransition(tagEdge + 10);
-      refData->WouldAdvancingToAbsPositionCauseTransition(tagEdge + 10);
+      stopData->WouldAdvancingToAbsPositionCauseTransition(stopEdge + 10);
+      startData->WouldAdvancingToAbsPositionCauseTransition(stopEdge + 10);
 
-      while (refEdge < tagEdge)
+      while (startEdge < stopEdge)
          {
-         pendingRefEdge = refEdge;
+         pendingStartEdge = startEdge;
 
-         if (!refData->WouldAdvancingToAbsPositionCauseTransition(tagEdge + 1))
+         if (!startData->WouldAdvancingToAbsPositionCauseTransition(stopEdge + 1))
             break;
 
-         refData->AdvanceToNextEdge();
-         refData->AdvanceToNextEdge();
-         refEdge = refData->GetSampleNumber();
+         startData->AdvanceToNextEdge();
+         startData->AdvanceToNextEdge();
+         startEdge = startData->GetSampleNumber();
          }
 
       // Pending values are the samples we want for the delta
       mResults->AddMarker
-         (pendingRefEdge, AnalyzerResults::Start, mSettings->mRefChannel);
+         (pendingStartEdge, AnalyzerResults::Start, mSettings->mStartChannel);
       mResults->AddMarker
-         (tagEdge, AnalyzerResults::Stop, mSettings->mTagChannel);
+         (stopEdge, AnalyzerResults::Stop, mSettings->mStopChannel);
 
-      uint64_t end = tagEdge;
+      uint64_t end = stopEdge;
 
-      if (pendingRefEdge == end)
+      if (pendingStartEdge == end)
          ++end;
 
       //we have a delta to save
       Frame frame;
-      frame.mData1 = tagEdge - pendingRefEdge;
+      frame.mData1 = stopEdge - pendingStartEdge;
       frame.mData2 = sampleRate;
       frame.mFlags = 0;
-      frame.mStartingSampleInclusive = pendingRefEdge;
+      frame.mStartingSampleInclusive = pendingStartEdge;
       frame.mEndingSampleInclusive = end;
 
       mResults->AddFrame(frame);
@@ -109,16 +109,16 @@ void TimeDeltaAnalyzer::WorkerThread()
       mResults->CommitResults();
       ReportProgress(frame.mEndingSampleInclusive);
 
-      tagData->AdvanceToNextEdge();
-      tagData->AdvanceToNextEdge();
+      stopData->AdvanceToNextEdge();
+      stopData->AdvanceToNextEdge();
 
-      if (pendingRefEdge == refEdge)
+      if (pendingStartEdge == startEdge)
          {
-         refData->AdvanceToNextEdge();
-         refData->AdvanceToNextEdge();
+         startData->AdvanceToNextEdge();
+         startData->AdvanceToNextEdge();
          }
 
-      pendingRefEdge = 0;
+      pendingStartEdge = 0;
       }
    }
 

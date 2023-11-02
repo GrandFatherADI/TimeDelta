@@ -17,8 +17,8 @@ void TimeDeltaSimulationDataGenerator::Initialize
    mSimulationSampleRateHz = simulation_sample_rate;
    mSettings = settings;
 
-   mRefData = mChannels.Add(settings->mRefChannel, simulation_sample_rate, BIT_LOW);
-   mTagData = mChannels.Add(settings->mTagChannel, simulation_sample_rate, BIT_LOW);
+   mStartData = mChannels.Add(settings->mStartChannel, simulation_sample_rate, BIT_LOW);
+   mStopData = mChannels.Add(settings->mStopChannel, simulation_sample_rate, BIT_LOW);
    }
 
 U32 TimeDeltaSimulationDataGenerator::GenerateSimulationData
@@ -32,11 +32,11 @@ U32 TimeDeltaSimulationDataGenerator::GenerateSimulationData
       AnalyzerHelpers::AdjustSimulationTargetSample
          (largest_sample_requested, sample_rate, mSimulationSampleRateHz);
 
-   while (mRefData->GetCurrentSampleNumber() < largestSample)
-      CreateDeltaPair(*mRefData);
+   while (mStartData->GetCurrentSampleNumber() < largestSample)
+      CreateDeltaPair(*mStartData);
 
-   while (mTagData->GetCurrentSampleNumber() < largestSample)
-      CreateDeltaPair(*mTagData);
+   while (mStopData->GetCurrentSampleNumber() < largestSample)
+      CreateDeltaPair(*mStopData);
 
    *simulation_channel = mChannels.GetArray();
    return mChannels.GetCount();
