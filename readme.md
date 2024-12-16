@@ -1,6 +1,6 @@
 # TimeDelta - Saleae Logic Analyzer LLA
 
-## Copyright &copy; 2023 ADInstruments
+## Copyright &copy; 2023 - 2024 ADInstruments
 
 __*The code is provided "as is" without warranty of any kind.*__
 ADInstruments __*does not warrant that the functions of the code will meet
@@ -61,7 +61,7 @@ can be found here: https://github.com/saleae/SampleAnalyzer. This repository
 also includes more complete build instructions (especially for Mac) in
 sample_readme.md than the build sysnopsis given below.
 
-Once the repository has been cloned to your machine and tolls and dependencies
+Once the repository has been cloned to your machine and tools and dependencies
 have been installed, from a command line navigate to the root folder of the
 clone then follow the mantra below appropriate to your system.
 

@@ -20,13 +20,13 @@ TimeDeltaAnalyzerSettings::TimeDeltaAnalyzerSettings():
       ("Start", "Measure time delta from this channel to stop channel");
    mStartEdgeInterface.reset(new AnalyzerSettingInterfaceBool());
    mStartEdgeInterface->SetTitleAndTooltip
-      ("Pos Edge", "Start rising edge is active");
+      ("Start Pos Edge", "Start rising edge is active");
    mStopChannelInterface.reset(new AnalyzerSettingInterfaceChannel());
    mStopChannelInterface->SetTitleAndTooltip
       ("Stop", "Measure time delta from start channel to this channel");
    mStopEdgeInterface.reset(new AnalyzerSettingInterfaceBool());
    mStopEdgeInterface->SetTitleAndTooltip
-      ("Pos Edge", "Stop rising edge is active");
+      ("Stop Pos Edge", "Stop rising edge is active");
 
    mStartChannelInterface->SetChannel(mStartChannel);
    mStopChannelInterface->SetChannel(mStopChannel);
